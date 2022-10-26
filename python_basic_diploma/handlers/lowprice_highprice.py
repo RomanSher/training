@@ -262,18 +262,3 @@ def search_attributes(call: CallbackQuery) -> None:
             (output, data['number_of_hotels'])
         )
     bot.delete_state(call.from_user.id, call.message.chat.id)
-
-
-
-# @bot.message_handler(state=None)
-# @message_exception_handler
-# def echo_handler(message: Message) -> None:
-#
-#     """
-#     Функция - обработчик всех входящих сообщений, не входящих в сценарий работы бота.
-#     :param message: Message
-#     :return: None
-#     """
-#
-#     logger.info(str(message.from_user.id))
-#     bot.send_message(message.from_user.id, literals.ECHO_MESSAGE)
