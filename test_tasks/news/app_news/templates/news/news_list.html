@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>News</title>
+</head>
+<body>
+    <h1>Новости</h1>
+    <form action="{% url 'export' %}">
+            <input type="submit" value="Export xlsx">
+    </form>
+    <ul>
+        {% if object_list %}
+            {% for news in object_list %}
+            <li>
+                <h2>{{news.title}}</h2>
+                <img src="{{news.picture.url}}">
+                <p>Описание: {{news.description}}</p>
+                <p>Добавлена: {{news.created_at}}</p>
+            </li>
+            {% endfor %}
+    </ul>
+        {% else %}
+            <p>Новостей нет</p>
+        {% endif %}
+</body>
+</html>
+
