@@ -8,12 +8,6 @@ class Сountry(models.Model):
     def __str__(self):
         return self.name
 
-    def get_manufacturer(self):
-        manufacturer = list(Manufacturer.objects.filter(country=self.id).values_list('name', flat=True))
-        return manufacturer
-
-
-
 class Manufacturer(models.Model):
     name = models.CharField(max_length=200, verbose_name='Название компании')
     country = models.ForeignKey(
@@ -22,19 +16,6 @@ class Manufacturer(models.Model):
 
     def __str__(self):
         return self.name
-
-    def get_car(self):
-        car = list(Car.objects.filter(manufacturer=self.id).values_list('name', flat=True))
-        return car
-
-    def number_of_comments_on_cars(self):
-        num_comments_cars = 0
-        list_cars = list(Car.objects.filter(manufacturer_id=self.id).values_list('id', flat=True))
-        comments = Comment.objects.values_list('car_id', flat=True)
-        for comment in comments:
-            if comment in list_cars:
-                num_comments_cars += 1
-        return num_comments_cars
 
 
 class Car(models.Model):
@@ -57,17 +38,8 @@ class Car(models.Model):
         verbose_name='Год окончания выпуска'
     )
 
-
     def __str__(self):
         return self.name
-
-    def get_comment(self):
-        comment = list(Comment.objects.filter(car=self.id).values_list('comment', flat=True))
-        return comment
-
-    def numbers_of_comments(self):
-        num_comments = list(Comment.objects.filter(car=self.id).values_list('comment', flat=True))
-        return len(num_comments)
 
 
 class Comment(models.Model):
