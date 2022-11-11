@@ -19,7 +19,6 @@ from app_reviews.views import *
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/country/', СountryAPICreateRead.as_view()),
