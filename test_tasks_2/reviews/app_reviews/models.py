@@ -38,6 +38,7 @@ class Car(models.Model):
         verbose_name='Год окончания выпуска'
     )
 
+
     def __str__(self):
         return self.name
 
