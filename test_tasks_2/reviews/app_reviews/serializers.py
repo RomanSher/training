@@ -18,12 +18,11 @@ class СountrySerializer(serializers.ModelSerializer):
 class ManufacturerSerializer(serializers.ModelSerializer):
     car = serializers.SerializerMethodField(method_name='get_car')
     num_comments_cars = serializers.SerializerMethodField(method_name='get_number_of_comments_on_cars')
-
+    country = serializers.StringRelatedField()
 
     class Meta:
         model = Manufacturer
         fields = ['id', 'name', 'country', 'car', 'num_comments_cars']
-
 
 
     def get_car(self, obj):
@@ -37,16 +36,10 @@ class ManufacturerSerializer(serializers.ModelSerializer):
         return queryset
 
 
-    def to_representation(self, instance):
-        rep = super(ManufacturerSerializer, self).to_representation(instance)
-        rep['country'] = instance.country.name
-        return rep
-
-
 class CarSerializer(serializers.ModelSerializer):
     comment = serializers.SerializerMethodField(method_name='get_comment')
     num_comments = serializers.SerializerMethodField(method_name='get_numbers_of_comments')
-
+    manufacturer = serializers.StringRelatedField()
 
     class Meta:
         model = Car
@@ -61,19 +54,10 @@ class CarSerializer(serializers.ModelSerializer):
         queryset = Comment.objects.filter(car__id=obj.id).count()
         return queryset
 
-    def to_representation(self, instance):
-        rep = super(CarSerializer, self).to_representation(instance)
-        rep['manufacturer'] = instance.manufacturer.name
-        return rep
-
 
 class CommentSerializer(serializers.ModelSerializer):
+    car = serializers.StringRelatedField()
 
     class Meta:
         model = Comment
         fields = ['id', 'email', 'car', 'created_at', 'comment']
-
-    def to_representation(self, instance):
-        rep = super(CommentSerializer, self).to_representation(instance)
-        rep['car'] = instance.car.name
-        return rep
