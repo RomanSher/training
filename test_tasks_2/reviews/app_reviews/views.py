@@ -1,11 +1,12 @@
+from rest_framework.viewsets import GenericViewSet
 from .models import *
 from .serializers import *
 from rest_framework import generics
 from django.http import HttpResponseBadRequest
 from rest_framework.permissions import AllowAny
 from .utils import *
-from django.http import HttpResponse
 
+# Закомментированные строки решение с помощью библиотеки openpyxl
 
 
 def export_country(request):
@@ -70,6 +71,74 @@ def export_comment(request):
         return response
     else:
         return HttpResponseBadRequest
+
+
+
+
+# class ExportCountry(DataMixin, GenericViewSet):
+#
+#     def dispatch(self, request, *args, **kwargs):
+#         format = self.request.GET.get('format')
+#         model = Сountry
+#         title = model.__name__.lower()
+#         print(title)
+#         if format == 'xlsx':
+#             result = self.export_xlsx(model)
+#             return result
+#         elif format == 'csv':
+#             result = self.export_csv(model)
+#             return result
+#         else:
+#             return HttpResponseBadRequest
+#
+#
+#
+# class ExportManufacturer(DataMixin, GenericViewSet):
+#
+#     def dispatch(self, request, *args, **kwargs):
+#         format = self.request.GET.get('format')
+#         model = Manufacturer
+#         if format == 'xlsx':
+#             result = self.export_xlsx(model)
+#             return result
+#         elif format == 'csv':
+#             result = self.export_csv(model)
+#             return result
+#         else:
+#             return HttpResponseBadRequest
+#
+#
+#
+# class ExportCar(DataMixin, GenericViewSet):
+#
+#     def dispatch(self, request, *args, **kwargs):
+#         format = self.request.GET.get('format')
+#         model = Car
+#         if format == 'xlsx':
+#             result = self.export_xlsx(model)
+#             return result
+#         elif format == 'csv':
+#             result = self.export_csv(model)
+#             return result
+#         else:
+#             return HttpResponseBadRequest
+#
+#
+#
+# class ExportComment(DataMixin, GenericViewSet):
+#
+#     def dispatch(self, request, *args, **kwargs):
+#         format = self.request.GET.get('format')
+#         model = Comment
+#         if format == 'xlsx':
+#             result = self.export_xlsx(model)
+#             return result
+#         elif format == 'csv':
+#             result = self.export_csv(model)
+#             return result
+#         else:
+#             return HttpResponseBadRequest
+
 
 
 
