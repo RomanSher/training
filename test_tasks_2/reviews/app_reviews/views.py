@@ -24,10 +24,10 @@ class ExportViewSet(DataMixin, GenericViewSet):
 
         format = self.request.GET.get(query)
         if format == 'xlsx':
-            result = self.export_xlsx(model)
+            result = self.export_xlsx(query, model)
             return result
         elif format == 'csv':
-            result = self.export_csv(model)
+            result = self.export_csv(query, model)
             return result
         else:
             return HttpResponseBadRequest
@@ -56,10 +56,10 @@ class ExportViewSet(DataMixin, GenericViewSet):
 #
 #         format = self.request.GET.get(query)
 #         if format == 'xlsx':
-#             result = self.export_xlsx(model, member_resource)
+#             result = self.export_xlsx(query, member_resource)
 #             return result
 #         elif format == 'csv':
-#             result = self.export_csv(model, member_resource)
+#             result = self.export_csv(query, member_resource)
 #             return result
 #         else:
 #             return HttpResponseBadRequest
