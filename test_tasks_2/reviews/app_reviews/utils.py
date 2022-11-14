@@ -7,26 +7,25 @@ from openpyxl import Workbook
 
 class DataMixin:
 
-        def export_xlsx(self, model):
-            title = model._meta.object_name.lower()
+        def export_xlsx(self, query, model):
             queryset = model.objects.all()
             columns = [field.name for field in model._meta.get_fields()]
             response = HttpResponse(
                 content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             )
-            response['Content-Disposition'] = f'attachment; filename={title}.xlsx'
+            response['Content-Disposition'] = f'attachment; filename={query}.xlsx'
             workbook = Workbook()
             worksheet = workbook.active
-            worksheet.title = title
+            worksheet.title = query
             row_num = 1
 
             for col_num, column_title in enumerate(columns[1:], 1):
                 cell = worksheet.cell(row=row_num, column=col_num)
                 cell.value = column_title
 
-            for country in queryset:
+            for obj in queryset:
                 row_num += 1
-                row = [getattr(country, field) for field in columns[1:]]
+                row = [getattr(obj, field) for field in columns[1:]]
 
                 for col_num, cell_value in enumerate(row, 1):
                     if not isinstance(cell_value, str | datetime.date | int):
@@ -38,11 +37,10 @@ class DataMixin:
             return response
 
 
-        def export_csv(self, model):
-            title = model._meta.object_name.lower()
+        def export_csv(self, query, model):
             queryset = model.objects.all()
             response = HttpResponse(content_type='text/csv')
-            response['Content-Disposition'] = f'attachment; filename={title}.csv'
+            response['Content-Disposition'] = f'attachment; filename={query}.csv'
             opts = queryset.model._meta
             writer = csv.writer(response)
             field_names = [field.name for field in opts.fields]
@@ -74,17 +72,15 @@ class DataMixin:
 #
 # class DataMixin:
 #
-#     def export_xlsx(self, model, member_resource):
-#         title = model._meta.object_name.lower()
+#     def export_xlsx(self, query, member_resource):
 #         dataset = member_resource.export()
 #         response = HttpResponse(dataset.xlsx, content_type='application/vnd.ms-excel')
-#         response['Content-Disposition'] = f'attachment; filename="{title}.xlsx"'
+#         response['Content-Disposition'] = f'attachment; filename="{query}.xlsx"'
 #         return response
 #
 #
-#     def export_csv(self, model, member_resource):
-#         title = model._meta.object_name.lower()
+#     def export_csv(self, query, member_resource):
 #         dataset = member_resource.export()
 #         response = HttpResponse(dataset.csv, content_type='text/csv')
-#         response['Content-Disposition'] = f'attachment; filename="{title}.csv"'
+#         response['Content-Disposition'] = f'attachment; filename="{query}.csv"'
 #         return response
