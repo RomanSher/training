@@ -6,139 +6,63 @@ from django.http import HttpResponseBadRequest
 from rest_framework.permissions import AllowAny
 from .utils import *
 
-# Закомментированные строки решение с помощью библиотеки openpyxl
+
+class ExportViewSet(DataMixin, GenericViewSet):
+
+    def dispatch(self, request, *args, **kwargs):
+        query = ''.join(request.GET)
+        if query == 'country':
+            model = Сountry
+        elif query == 'manufacturer':
+            model = Manufacturer
+        elif query == 'car':
+            model = Car
+        elif query == 'comment':
+            model = Comment
+        else:
+            return HttpResponseBadRequest
+
+        format = self.request.GET.get(query)
+        if format == 'xlsx':
+            result = self.export_xlsx(model)
+            return result
+        elif format == 'csv':
+            result = self.export_csv(model)
+            return result
+        else:
+            return HttpResponseBadRequest
 
 
-def export_country(request):
-    member_resource = СountryResource()
-    dataset = member_resource.export()
-    format = request.GET['format']
-    if format == 'xlsx':
-        response = HttpResponse(dataset.xlsx, content_type='application/vnd.ms-excel')
-        response['Content-Disposition'] = 'attachment; filename="country.xlsx"'
-        return response
-    elif format == 'csv':
-        response = HttpResponse(dataset.csv, content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="country.csv"'
-        return response
-    else:
-        return HttpResponseBadRequest
+# Закомментированные строки - это решение с помощью библиотеки django import-export
 
-
-def export_manufacturer(request):
-    member_resource = ManufacturerResource()
-    dataset = member_resource.export()
-    format = request.GET['format']
-    if format == 'xlsx':
-        response = HttpResponse(dataset.xlsx, content_type='application/vnd.ms-excel')
-        response['Content-Disposition'] = 'attachment; filename="manufacturer.xlsx"'
-        return response
-    elif format == 'csv':
-        response = HttpResponse(dataset.csv, content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="manufacturer.csv"'
-        return response
-    else:
-        return HttpResponseBadRequest
-
-
-def export_car(request):
-    member_resource = СarResource()
-    dataset = member_resource.export()
-    format = request.GET['format']
-    if format == 'xlsx':
-        response = HttpResponse(dataset.xlsx, content_type='application/vnd.ms-excel')
-        response['Content-Disposition'] = 'attachment; filename="car.xlsx"'
-        return response
-    elif format == 'csv':
-        response = HttpResponse(dataset.csv, content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="car.csv"'
-        return response
-    else:
-        return HttpResponseBadRequest
-
-
-def export_comment(request):
-    member_resource = CommentResource()
-    dataset = member_resource.export()
-    format = request.GET['format']
-    if format == 'xlsx':
-        response = HttpResponse(dataset.xlsx, content_type='application/vnd.ms-excel')
-        response['Content-Disposition'] = 'attachment; filename="comment.xlsx"'
-        return response
-    elif format == 'csv':
-        response = HttpResponse(dataset.csv, content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="comment.csv"'
-        return response
-    else:
-        return HttpResponseBadRequest
-
-
-
-
-# class ExportCountry(DataMixin, GenericViewSet):
+# class ExportViewSet(DataMixin, GenericViewSet):
 #
 #     def dispatch(self, request, *args, **kwargs):
-#         format = self.request.GET.get('format')
-#         model = Сountry
-#         title = model.__name__.lower()
-#         print(title)
-#         if format == 'xlsx':
-#             result = self.export_xlsx(model)
-#             return result
-#         elif format == 'csv':
-#             result = self.export_csv(model)
-#             return result
+#         query = ''.join(request.GET)
+#         if query == 'country':
+#             model = Сountry
+#             member_resource = СountryResource()
+#         elif query == 'manufacturer':
+#             model = Manufacturer
+#             member_resource = ManufacturerResource()
+#         elif query == 'car':
+#             model = Car
+#             member_resource = СarResource()
+#         elif query == 'comment':
+#             model = Comment
+#             member_resource = CommentResource()
 #         else:
 #             return HttpResponseBadRequest
 #
-#
-#
-# class ExportManufacturer(DataMixin, GenericViewSet):
-#
-#     def dispatch(self, request, *args, **kwargs):
-#         format = self.request.GET.get('format')
-#         model = Manufacturer
+#         format = self.request.GET.get(query)
 #         if format == 'xlsx':
-#             result = self.export_xlsx(model)
+#             result = self.export_xlsx(model, member_resource)
 #             return result
 #         elif format == 'csv':
-#             result = self.export_csv(model)
+#             result = self.export_csv(model, member_resource)
 #             return result
 #         else:
 #             return HttpResponseBadRequest
-#
-#
-#
-# class ExportCar(DataMixin, GenericViewSet):
-#
-#     def dispatch(self, request, *args, **kwargs):
-#         format = self.request.GET.get('format')
-#         model = Car
-#         if format == 'xlsx':
-#             result = self.export_xlsx(model)
-#             return result
-#         elif format == 'csv':
-#             result = self.export_csv(model)
-#             return result
-#         else:
-#             return HttpResponseBadRequest
-#
-#
-#
-# class ExportComment(DataMixin, GenericViewSet):
-#
-#     def dispatch(self, request, *args, **kwargs):
-#         format = self.request.GET.get('format')
-#         model = Comment
-#         if format == 'xlsx':
-#             result = self.export_xlsx(model)
-#             return result
-#         elif format == 'csv':
-#             result = self.export_csv(model)
-#             return result
-#         else:
-#             return HttpResponseBadRequest
-
 
 
 
