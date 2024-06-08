@@ -1,0 +1,17 @@
+.idea/
+cron/
+venv/
+
+.env.*
+
+*.md
+*.git*
+
+**/*.sql.gz
+**/*.doc*
+**/*.xls*
+**/*.zip
+**/*.pdf
+**/*.csv
+**/.~*
+**/~*
