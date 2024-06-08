@@ -1,5 +1,0 @@
-pip install Django==2.2
-pip3 install djangorestframework
-pip install djangorestframework-simplejwt
-pip install psycopg2
-pip install django-import-export
